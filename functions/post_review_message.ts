@@ -7,11 +7,11 @@ import { SlackFunction } from "deno-slack-sdk/mod.ts";
  * be used independently or as steps in workflows.
  * https://api.slack.com/automation/functions/custom
  */
-export const PostIssueMessage = DefineFunction({
-  callback_id: "post_issue_message",
-  title: "Post an issue to channel",
-  description: "Create an issue message from submitted form",
-  source_file: "functions/post_issue_message.ts",
+export const PostReviewRequestMessage = DefineFunction({
+  callback_id: "postreview_message",
+  title: "Post an review request to channel",
+  description: "Create an review request message from submitted form",
+  source_file: "functions/postreview_message.ts",
   input_parameters: {
     properties: {
       channel: {
@@ -22,11 +22,11 @@ export const PostIssueMessage = DefineFunction({
       },
       severity: {
         type: Schema.types.string,
-        description: "Severity of the issue",
+        description: "Severity of the review request",
       },
       description: {
         type: Schema.types.string,
-        description: "Description of the issue",
+        description: "Description of the review request",
       },
       link: {
         type: Schema.types.string,
@@ -45,11 +45,11 @@ export const PostIssueMessage = DefineFunction({
       },
       severity: {
         type: Schema.types.string,
-        description: "Severity of the issue",
+        description: "Severity of the review request",
       },
       description: {
         type: Schema.types.string,
-        description: "Description of the issue",
+        description: "Description of the review request",
       },
       link: {
         type: Schema.types.string,
@@ -67,7 +67,7 @@ export const PostIssueMessage = DefineFunction({
  * https://api.slack.com/automation/functions/custom
  */
 export default SlackFunction(
-  PostIssueMessage,
+  PostReviewRequestMessage,
   async ({ inputs, client }) => {
     const { channel, severity, description, link, submitting_user } = inputs;
     const severityEmoji: { [key: string]: string } = {
@@ -88,14 +88,14 @@ export default SlackFunction(
             "type": "mrkdwn",
             "text": `${
               severityEmoji[severity]
-            } *Issue submission from <@${submitting_user}>*`,
+            } *ReviewRequest submission from <@${submitting_user}>*`,
           },
         },
         {
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": `*Description of the issue:*\n${description}\n\n`,
+            "text": `*Description of the review request:*\n${description}\n\n`,
           },
         },
         {

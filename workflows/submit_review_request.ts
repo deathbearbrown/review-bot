@@ -1,15 +1,15 @@
 import { DefineWorkflow, Schema } from "deno-slack-sdk/mod.ts";
-import { PostIssueMessage } from "../functions/post_issue_message.ts";
+import { PostReviewRequestMessage } from "../functions/post_review_message.ts";
 
 /**
  * A workflow is a set of steps that are executed in order.
  * Each step in a workflow is a function.
  * https://api.slack.com/automation/workflows
  */
-const SubmitIssueWorkflow = DefineWorkflow({
-  callback_id: "submit_issue",
-  title: "Submit an issue",
-  description: "Submit an issue to the channel",
+const SubmitReviewRequestWorkflow = DefineWorkflow({
+  callback_id: "submitreview",
+  title: "Submit an review request",
+  description: "Submit an review request to the channel",
   input_parameters: {
     properties: {
       interactivity: {
@@ -28,16 +28,16 @@ const SubmitIssueWorkflow = DefineWorkflow({
  * built-in OpenForm function as a first step.
  * https://api.slack.com/automation/functions#open-a-form
  */
-const inputForm = SubmitIssueWorkflow.addStep(
+const inputForm = SubmitReviewRequestWorkflow.addStep(
   Schema.slack.functions.OpenForm,
   {
-    title: "Submit an issue",
-    interactivity: SubmitIssueWorkflow.inputs.interactivity,
+    title: "Submit an review request",
+    interactivity: SubmitReviewRequestWorkflow.inputs.interactivity,
     submit_label: "Submit",
     fields: {
       elements: [{
         name: "severity",
-        title: "Severity of issue",
+        title: "Severity of review request",
         type: Schema.types.string,
         enum: [":white_circle:", ":large_blue_circle:", ":red_circle:"],
         choices: [
@@ -59,7 +59,7 @@ const inputForm = SubmitIssueWorkflow.addStep(
         ],
       }, {
         name: "description",
-        title: "Description of issue",
+        title: "Description of review request",
         type: Schema.types.string,
         long: true,
       }, {
@@ -79,10 +79,10 @@ const inputForm = SubmitIssueWorkflow.addStep(
  * outputs, just like typical programmatic functions.
  * https://api.slack.com/automation/functions/custom
  */
-SubmitIssueWorkflow.addStep(
-  PostIssueMessage,
+SubmitReviewRequestWorkflow.addStep(
+  PostReviewRequestMessage,
   {
-    channel: SubmitIssueWorkflow.inputs.channel,
+    channel: SubmitReviewRequestWorkflow.inputs.channel,
     submitting_user: inputForm.outputs.interactivity.interactor.id,
     severity: inputForm.outputs.fields.severity,
     description: inputForm.outputs.fields.description,
@@ -90,4 +90,4 @@ SubmitIssueWorkflow.addStep(
   },
 );
 
-export default SubmitIssueWorkflow;
+export default SubmitReviewRequestWorkflow;

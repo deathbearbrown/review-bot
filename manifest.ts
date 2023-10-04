@@ -1,6 +1,6 @@
 import { Manifest } from "deno-slack-sdk/mod.ts";
-import { PostIssueMessage } from "./functions/post_issue_message.ts";
-import SubmitIssueWorkflow from "./workflows/submit_issue.ts";
+import { PostReviewRequestMessage } from "./functions/post_review_message.ts";
+import SubmitReviewRequestWorkflow from "./workflows/submitreview.ts";
 
 /**
  * The app manifest contains the app's configuration. This
@@ -9,10 +9,10 @@ import SubmitIssueWorkflow from "./workflows/submit_issue.ts";
  */
 export default Manifest({
   name: "review-bot-app",
-  description: "A basic sample that demonstrates issue submission to channel",
+  description: "A basic sample that demonstrates review request submission to channel",
   icon: "assets/default_new_app_icon.png",
-  workflows: [SubmitIssueWorkflow],
-  functions: [PostIssueMessage],
+  workflows: [SubmitReviewRequestWorkflow],
+  functions: [PostReviewRequestMessage],
   outgoingDomains: [],
   botScopes: ["commands", "chat:write", "chat:write.public"],
 });
